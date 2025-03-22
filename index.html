@@ -1,20 +1,33 @@
-<!DOCTYPE html>
-<html lang="uk">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Інструкція</title>
-</head>
-<body>
-    <img src="IMG_20250302_145627.jpg" alt="Інструкція">
-    <p>Натисніть на три крапки в правому верхньому кутку і виберіть "Відкрити в браузері"
-        та зачекайте пару секунд.</p>
-    <script>
-        function redirectToSite() {
-            window.location.href = "https://google.com";
-        }
-        // Автоматичне перенаправлення через 7 секунд
-        setTimeout(redirectToSite, 7000);
-    </script>
-</body>
-</html>
+<a href="https://google.com" onclick="openInBrowser(event); return false;">
+  🔗 Відкрити в браузері
+</a>
+
+<script>
+function openInBrowser(event) {
+  event.preventDefault();
+  const url = 'https://google.com';
+  const isAndroid = /android/i.test(navigator.userAgent);
+  const isiOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+
+  // Для Android - інтент для Chrome
+  if (isAndroid) {
+    const intentUrl = `intent://google.com#Intent;scheme=https;package=com.android.chrome;end;`;
+    window.location.href = intentUrl;
+    
+    // Фолбек на звичайний браузер, якщо Chrome не встановлено
+    setTimeout(() => {
+      if (!document.hidden) window.location.href = url;
+    }, 500);
+  }
+
+  // Для iOS - відкриваємо напряму (працює в Safari за замовчуванням)
+  else if (isiOS) {
+    window.open(url, '_blank');
+  }
+
+  // Для інших платформ
+  else {
+    window.open(url, '_blank');
+  }
+}
+</script>
