@@ -1,33 +1,95 @@
-<a href="https://google.com" onclick="openInBrowser(event); return false;">
-  🔗 Відкрити в браузері
-</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open Link</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
-<script>
-function openInBrowser(event) {
-  event.preventDefault();
-  const url = 'https://google.com';
-  const isAndroid = /android/i.test(navigator.userAgent);
-  const isiOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(to right bottom, rgb(26, 32, 44), rgb(74, 29, 150), rgb(91, 33, 182));
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+            height: 100vh;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .container {
+            max-width: 600px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            top: -10%; /* Сдвигаем контейнер выше центра */
+        }
+        .button-container {
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            background-color: #ffffff;
+            color: #4A1D96;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            max-width: 300px;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            background-color: #EDE7F6;
+            color: #321E75;
+        }
+        .instruction {
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.6;
+            max-width: 400px;
+            opacity: 0.9;
+        }
+        .highlight-ios {
+            color: #FFCC00;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="button-container">
+            <button onclick="openLink()">ВІДКРИТИ САЙТ</button>
+        </div>
+        <p class="instruction">
+            Якщо у вас <span class="highlight-ios">Айфон</span>, для коректної роботи сайту радимо спочатку натиснути на три крапки в правому верхньому куті, вибрати <b>ВІДКРИТИ В БРАУЗЕРІ</b>, і тільки потім натиснути кнопку ВІДКРИТИ САЙТ.
+        </p>
+    </div>
 
-  // Для Android - інтент для Chrome
-  if (isAndroid) {
-    const intentUrl = `intent://google.com#Intent;scheme=https;package=com.android.chrome;end;`;
-    window.location.href = intentUrl;
-    
-    // Фолбек на звичайний браузер, якщо Chrome не встановлено
-    setTimeout(() => {
-      if (!document.hidden) window.location.href = url;
-    }, 500);
-  }
+    <script>
+        const targetUrl = "https://offers.affimelody.com/f6bUZz"; // Ваше посилання
 
-  // Для iOS - відкриваємо напряму (працює в Safari за замовчуванням)
-  else if (isiOS) {
-    window.open(url, '_blank');
-  }
+        const openLink = () => {
+            let formattedUrl = targetUrl;
+            if (!targetUrl.startsWith("https://") && !targetUrl.startsWith("http://")) {
+                formattedUrl = "https://" + targetUrl;
+            }
 
-  // Для інших платформ
-  else {
-    window.open(url, '_blank');
-  }
-}
-</script>
+            const isAndroid = /android/.test(navigator.userAgent.toLowerCase());
+            if (isAndroid) {
+                window.location.href = `intent://${formattedUrl.replace('https://', '')}#Intent;scheme=https;package=com.android.chrome;end`;
+            } else {
+                window.location.replace(formattedUrl);
+            }
+        };
+    </script>
+</body>
+</html>
